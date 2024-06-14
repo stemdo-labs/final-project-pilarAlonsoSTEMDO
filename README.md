@@ -24,4 +24,74 @@ Dentro del proyecto de Terraform tendremos:
 ```plaintext
 [Usuario] --> [Public IP] --> [Load Balancer] --> [AKS Cluster] --> [Aplicación]
 
+                         ┌─────────────────────────────┐
+                         │       Azure Kubernetes      │
+                         │         Service (AKS)       │
+                         │                             │
+                         │  ┌───────────────────────┐  │
+                         │  │   App Deployment      │  │
+                         │  └───────────────────────┘  │
+                         │      (2 replicas)          │
+                         │         │                 │
+                         │         │                 │
+                         │  ┌───────────────────────┐  │
+                         │  │    Load Balancer      │  │
+                         │  └───────────────────────┘  │
+                         │                             │
+                         │         │                  │
+                         │         │                  │
+                         └─────────┼──────────────────┘
+                                   │
+                                   │
+                 ┌─────────────────┴─────────────────┐
+                 │                                   │
+      ┌──────────▼──────────┐            ┌───────────▼───────────┐
+      │     VM for DB       │            │     VM for Backups    │
+      │   (MySQL/PostgreSQL)│            │                      │
+      └─────────────────────┘            └───────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                         Virtual Network (VNet)                  │
+    │ ┌───────────────────────────────────────────────────────────┐  │
+    │ │                  Subnet for AKS Nodes                     │  │
+    │ └───────────────────────────────────────────────────────────┘  │
+    │ ┌───────────────────────────────────────────────────────────┐  │
+    │ │          Subnet for VMs (DB, Backups)                     │  │
+    │ └───────────────────────────────────────────────────────────┘  │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+
+
+
+## Estructura
+
+terraform/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── provider.tf
+├── modules/
+│   ├── network/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── nsg/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── load_balancer/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── aks/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── vm/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+└── terraform.tfvars
+
+
 
