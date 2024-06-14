@@ -21,7 +21,7 @@ Dentro del proyecto de Terraform tendremos:
 
 ## Acceso a la App
 
-```plaintext
+
 [Usuario] --> [Public IP] --> [Load Balancer] --> [AKS Cluster] --> [Aplicación]
 
                          ┌─────────────────────────────┐
@@ -62,7 +62,7 @@ Dentro del proyecto de Terraform tendremos:
     └─────────────────────────────────────────────────────────────────┘
 
 
-
+```plaintext
 ## Estructura
 
 terraform/
@@ -92,6 +92,57 @@ terraform/
 │   │   ├── variables.tf
 │   │   ├── outputs.tf
 └── terraform.tfvars
+```
 
 
 
+
+## Configuring Azure Container Registry (ACR) and Azure Kubernetes Service (AKS)
+
+This section details the steps required to configure an Azure Container Registry (ACR) and an Azure Kubernetes Service (AKS) cluster in Azure. It also includes instructions on creating and using Docker secrets in your AKS cluster and deleting virtual machine disks in Azure.
+
+### Steps to Configure ACR and AKS
+
+1. **Obtain the ACR ID**
+    ```sh
+    ACR_ID=$(az acr show --name palonsoACR --resource-group rg-palonso-dvfinlab --query "id" --output tsv)
+    echo "ACR_ID obtained: $ACR_ID"
+    ```
+
+2. **Obtain the AKS Cluster Identity ID**
+    ```sh
+    AKS_IDENTITY_ID=$(az aks show --resource-group rg-palonso-dvfinlab --name aks-cluster --query "identityProfile.kubeletidentity.objectId" --output tsv)
+    echo "AKS_IDENTITY_ID obtained: $AKS_IDENTITY_ID"
+    ```
+
+3. **Assign the AcrPull Role to the AKS Cluster**
+    ```sh
+    az role assignment create --assignee $AKS_IDENTITY_ID --role AcrPull --scope $ACR_ID
+    echo "AcrPull role assigned to the AKS cluster."
+    ```
+
+4. **Configure kubectl for the AKS Cluster**
+    ```sh
+    az aks get-credentials --resource-group rg-palonso-dvfinlab --name aks-cluster
+    echo "kubectl configured for the AKS cluster."
+    ```
+
+5. **Create Docker Secret in AKS Cluster**
+    ```sh
+    kubectl create secret docker-registry regcred \
+      --docker-server=palonsoacr.azurecr.io \
+      --docker-username=palonsoACR \
+      --docker-password=<YOUR_PASSWORD> \
+      --docker-email=palonso@stemdo.io
+    echo "Docker Secret created in AKS cluster."
+    ```
+
+    Replace `<YOUR_PASSWORD>` with your actual ACR password. This secret will be used to authenticate Docker with the ACR from the AKS cluster.
+
+### Deleting Virtual Machine Disks in Azure
+
+To delete the disks of virtual machines in Azure, use the following commands:
+
+```sh
+az disk delete --resource-group RG-PALONSO-DVFINLAB --name backup-vm-osdisk --yes
+az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
