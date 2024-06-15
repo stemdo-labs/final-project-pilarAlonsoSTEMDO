@@ -126,6 +126,7 @@ This section details the steps required to configure an Azure Container Registry
     az aks get-credentials --resource-group rg-palonso-dvfinlab --name aks-cluster
     echo "kubectl configured for the AKS cluster."
     ```
+  ###Como en nuestro caso no tenemos la autorización correspondiente consumiremos el secreto de docker con las credenciales facilitadas en el ACR
 
 5. **Create Docker Secret in AKS Cluster**
     ```sh
