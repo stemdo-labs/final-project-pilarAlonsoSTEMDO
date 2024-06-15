@@ -147,3 +147,8 @@ To delete the disks of virtual machines in Azure, use the following commands:
 ```sh
 az disk delete --resource-group RG-PALONSO-DVFINLAB --name backup-vm-osdisk --yes
 az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
+```
+5. **Acceso a la app a través del clúster**
+
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/af7545a7-95ca-4e76-84f7-c11821e5c555)
+
