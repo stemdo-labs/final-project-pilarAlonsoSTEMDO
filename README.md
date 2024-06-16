@@ -151,4 +151,12 @@ az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
 5. **Acceso a la app a través del clúster**
 
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/af7545a7-95ca-4e76-84f7-c11821e5c555)
+5. **Conexión por ssh a la vm_backup a través de su IP pública **
+```sh
+ssh -i ~/.ssh/id_rsa adminuser@52.174.32.157
+```
+
+
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/692e2965-731f-42e1-924a-6c8e58cccef4)
+
 
