@@ -97,38 +97,39 @@ terraform/
 
 
 
-## Configuring Azure Container Registry (ACR) and Azure Kubernetes Service (AKS)
+## Configurar ACR Y  AKS
 
-This section details the steps required to configure an Azure Container Registry (ACR) and an Azure Kubernetes Service (AKS) cluster in Azure. It also includes instructions on creating and using Docker secrets in your AKS cluster and deleting virtual machine disks in Azure.
 
 ### Steps to Configure ACR and AKS
 
-1. **Obtain the ACR ID**
+1. **Obtener el ACR ID**
     ```sh
     ACR_ID=$(az acr show --name palonsoACR --resource-group rg-palonso-dvfinlab --query "id" --output tsv)
     echo "ACR_ID obtained: $ACR_ID"
     ```
 
-2. **Obtain the AKS Cluster Identity ID**
+2. **Obtener el AKS Cluster Identity ID**
     ```sh
     AKS_IDENTITY_ID=$(az aks show --resource-group rg-palonso-dvfinlab --name aks-cluster --query "identityProfile.kubeletidentity.objectId" --output tsv)
     echo "AKS_IDENTITY_ID obtained: $AKS_IDENTITY_ID"
     ```
 
-3. **Assign the AcrPull Role to the AKS Cluster**
+3. **Asignar el ACRPullRole  al the AKS Cluster**
     ```sh
     az role assignment create --assignee $AKS_IDENTITY_ID --role AcrPull --scope $ACR_ID
     echo "AcrPull role assigned to the AKS cluster."
     ```
 
-4. **Configure kubectl for the AKS Cluster**
+4. **Configurar kubectl for the AKS Cluster**
     ```sh
     az aks get-credentials --resource-group rg-palonso-dvfinlab --name aks-cluster
     echo "kubectl configured for the AKS cluster."
     ```
-  ###Como en nuestro caso no tenemos la autorización correspondiente consumiremos el secreto de docker con las credenciales facilitadas en el ACR
+    Sin permisos esta forma de hacerlo nos dará errores por la autorización denegada al no tener un rol que permita crear roles.
+0. **Como en nuestro caso no tenemos la autorización correspondiente consumiremos el secreto de docker con las credenciales facilitadas en el ACR**
+  
 
-5. **Create Docker Secret in AKS Cluster**
+5. **Crear Docker Secret en AKS Cluster**
     ```sh
     kubectl create secret docker-registry regcred \
       --docker-server=palonsoacr.azurecr.io \
@@ -140,9 +141,9 @@ This section details the steps required to configure an Azure Container Registry
 
     Replace `<YOUR_PASSWORD>` with your actual ACR password. This secret will be used to authenticate Docker with the ACR from the AKS cluster.
 
-### Deleting Virtual Machine Disks in Azure
+### Borrar discos de las vm
 
-To delete the disks of virtual machines in Azure, use the following commands:
+Los discos de almacenamiento de las vms no se borrarán con el destroy
 
 ```sh
 az disk delete --resource-group RG-PALONSO-DVFINLAB --name backup-vm-osdisk --yes
@@ -151,12 +152,31 @@ az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
 5. **Acceso a la app a través del clúster**
 
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/af7545a7-95ca-4e76-84f7-c11821e5c555)
-5. **Conexión por ssh a la vm_backup a través de su IP pública **
+La Ip pública se ha tenido que crear dentro del grupo de recursos Mg donde se localiza el cluster. 
+
+# Ansible
+La vm_backup tendrdá una ip pública y funcionará como nodo maestro.
+
+1. **Conexión por ssh a la vm_backup**
+
 ```sh
 ssh -i ~/.ssh/id_rsa adminuser@52.174.32.157
 ```
 
-
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/692e2965-731f-42e1-924a-6c8e58cccef4)
+
+2. **Instalar ansible en  vm_backup**
+ ```sh
+   sudo apt update
+sudo apt install ansible -y
+```
+2. **Creo el inventario y los playbooks**
+   
+
+ Para poder almacenar la copia de la bd en azure tengo que crear un contenedor dentro de mi storage account y usar su key.
+```ssh
+az storage container create --name mycontainer --account-name stapalonsodvfinlab
+``
+
 
 
