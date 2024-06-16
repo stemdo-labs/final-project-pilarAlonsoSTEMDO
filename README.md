@@ -176,7 +176,7 @@ sudo apt install ansible -y
  Para poder almacenar la copia de la bd en azure tengo que crear un contenedor dentro de mi storage account y usar su key.
 ```ssh
 az storage container create --name mycontainer --account-name stapalonsodvfinlab
-``
+```
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/c4f12262-8152-498a-9ec7-973f3fb2ccf8)
 
 
