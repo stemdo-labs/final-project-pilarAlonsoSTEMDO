@@ -181,6 +181,8 @@ az storage container create --name mycontainer --account-name stapalonsodvfinlab
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/c4f12262-8152-498a-9ec7-973f3fb2ccf8)
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/ba79d4b0-97ed-4b6a-862e-1c427c866f5c)
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/3eef3806-159a-4a04-9091-76f3f73c8b6d)
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/02eb19e1-8088-452a-bd69-e99a9e36da1f)
+
 
 
 
