@@ -180,25 +180,21 @@ chmod 600 ~/.ssh/id_rsa
 ```ssh
 az storage container create --name mycontainer --account-name stapalonsodvfinlab
 ```
-![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/c4f12262-8152-498a-9ec7-973f3fb2ccf8)
 Ejecución del playbook de setup_db
-![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/ba79d4b0-97ed-4b6a-862e-1c427c866f5c)
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/c4f12262-8152-498a-9ec7-973f3fb2ccf8)
 Ejecución del playbook setup_backup
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/ba79d4b0-97ed-4b6a-862e-1c427c866f5c)
+Como podemos observar dentro del storage account se ha creado la copia de backup a través de la configuración de Ansible
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/3eef3806-159a-4a04-9091-76f3f73c8b6d)
 3. **Preparar Mysql y siembra de la bd**
+
 Para poder conectarnos a la db tenemos que permitir las conexiones remotas editando mysqld.conf:
 bind-address = 0.0.0.0
 Y realizamos la siembra de la base de datos con el script de SQL.
 
-Como podemos observar dentro del storage account se ha creado la copia de backup
-![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/02eb19e1-8088-452a-bd69-e99a9e36da1f)
-
-
-
-
-
-CONEXIÓN A LA BD 
-![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/5c879843-aafe-40d8-bbb1-a378fd587e21)
+## Conexión a ip pública de la aplicación 
+A través de la ip pública nos conectamos a la app que se conecta con la vm de bd a través de su ip privada y el puerto 3306
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/1d151653-a136-464d-a5ab-e553fd94f18d)
 
 ## Borrar discos de las vm
 
