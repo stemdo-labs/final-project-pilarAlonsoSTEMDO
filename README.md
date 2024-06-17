@@ -184,4 +184,6 @@ az storage container create --name mycontainer --account-name stapalonsodvfinlab
 
 
 
+CONEXIÓN A LA BD 
+![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/5c879843-aafe-40d8-bbb1-a378fd587e21)
 
