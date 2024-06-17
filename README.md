@@ -94,9 +94,10 @@ terraform/
 └── terraform.tfvars
 ```
 
-
-
-
+## Connstruir la imagen de docker
+```sh
+docker build -t palonsoacr.azurecr.io/my-concert-app:latest .
+```
 ## Configurar ACR Y  AKS
 
 
