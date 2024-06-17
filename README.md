@@ -146,20 +146,13 @@ docker build -t palonsoacr.azurecr.io/my-concert-app:latest .
 
     Replace `<YOUR_PASSWORD>` with your actual ACR password. This secret will be used to authenticate Docker with the ACR from the AKS cluster.
 
-### Borrar discos de las vm
 
-Los discos de almacenamiento de las vms no se borrarán con el destroy
-
-```sh
-az disk delete --resource-group RG-PALONSO-DVFINLAB --name backup-vm-osdisk --yes
-az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
-```
 5. **Acceso a la app a través del clúster**
 
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/af7545a7-95ca-4e76-84f7-c11821e5c555)
 La Ip pública se ha tenido que crear dentro del grupo de recursos Mg donde se localiza el cluster. 
 
-# Ansible
+## Ansible
 La vm_backup tendrdá una ip pública y funcionará como nodo maestro.
 
 1. **Conexión por ssh a la vm_backup**
@@ -175,6 +168,11 @@ ssh -i ~/.ssh/id_rsa adminuser@52.174.32.157
    sudo apt update
 sudo apt install ansible -y
 ```
+Después hay que preparar la conxión entre las dos vms a través de la clave pública y privada. Copiaremos la clave pública a la vm de bd y le daremos los permisos:
+```sh
+ssh-copy-id -i ~/.ssh/id_rsa.pub adminuser@10.0.2.4
+chmod 600 ~/.ssh/id_rsa
+```
 2. **Creo el inventario y los playbooks**
    
 
@@ -183,9 +181,18 @@ sudo apt install ansible -y
 az storage container create --name mycontainer --account-name stapalonsodvfinlab
 ```
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/c4f12262-8152-498a-9ec7-973f3fb2ccf8)
+Ejecución del playbook de setup_db
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/ba79d4b0-97ed-4b6a-862e-1c427c866f5c)
+Ejecución del playbook setup_backup
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/3eef3806-159a-4a04-9091-76f3f73c8b6d)
+3. **Preparar Mysql y siembra de la bd**
+Para poder conectarnos a la db tenemos que permitir las conexiones remotas editando mysqld.conf:
+bind-address = 0.0.0.0
+Y realizamos la siembra de la base de datos con el script de SQL.
+
+Como podemos observar dentro del storage account se ha creado la copia de backup
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/02eb19e1-8088-452a-bd69-e99a9e36da1f)
+
 
 
 
@@ -193,3 +200,11 @@ az storage container create --name mycontainer --account-name stapalonsodvfinlab
 CONEXIÓN A LA BD 
 ![image](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/5c879843-aafe-40d8-bbb1-a378fd587e21)
 
+## Borrar discos de las vm
+
+Los discos de almacenamiento de las vms no se borrarán con el destroy
+
+```sh
+az disk delete --resource-group RG-PALONSO-DVFINLAB --name backup-vm-osdisk --yes
+az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
+```
