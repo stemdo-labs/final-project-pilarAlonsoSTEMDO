@@ -1,6 +1,9 @@
 # final-project-pilarAlonsoSTEMDO
+# Primer Diagrama grupal y planteamiento del trabajo final en equipo
 
 ![Sin título-2024-06-13-0739](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/6535855c-6853-4b5a-9c53-9d1bcd263bca)
+
+# Mi diagrama final de toda mi arquitectura
 
 # Terraform
 
