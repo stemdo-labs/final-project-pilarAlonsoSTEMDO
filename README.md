@@ -206,5 +206,5 @@ az disk delete --resource-group RG-PALONSO-DVFINLAB --name db-vm-osdisk --yes
 ```
 # Github Actions
 Diagram:
-![githubActions](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/1d4cc019-2262-4278-b612-19259561c565)
 
+![githubActions](https://github.com/stemdo-labs/final-project-pilarAlonsoSTEMDO/assets/166375061/6fbb9274-5385-405f-9495-fa6d926edc55)
